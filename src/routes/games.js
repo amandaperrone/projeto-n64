@@ -20,7 +20,30 @@ router.get('/', async (req, res) => {
     }
 
     const result = await Games.find(criteria)
-    return res.json({message: 'Games Ok', data: result})
+    return res.json({message: 'Games Found', data: result})
+})
+
+router.post('/', async (req, res) => {
+    const {body} = req
+    const data = await Games.store(body)
+    return res.json({ message: "Game Stored", data: body })
+})
+
+router.put('/:id', async (req, res) => {
+    const { body, params } = req
+    const { id } = params
+
+    const game = await Games.update(id, body)
+
+    return res.json({ message: "Game Updated", data: game })
+})
+
+router.delete('/:id', async (req, res) => {
+    const { params } = req
+    const { id } = params
+    const result = await Games.destroy(id)
+
+    return res.json({ message: 'Game Deleted', data: result})
 })
 
 module.exports = router
